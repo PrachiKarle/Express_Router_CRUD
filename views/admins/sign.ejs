@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in - Admin</title>
+    <%- include('../cdn_link.ejs')%>
+    <style>
+        #div_main{
+            background-image: linear-gradient(#B33E8F,#324AB2);
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="row m-0 p-0" id=div_main>
+        <div class="col-lg-3 col-md-6 col-12 p-5 py-3 bg-light m-auto text-center">
+            <h5 class="text-dark fw-bold">SIGN UP</h5>
+            <form action="/admin/addadmin" method="POST" class="my-5">
+
+                  <input name="admin_name" type="text" placeholder="Name" class="form-control my-3">
+                  <input name="admin_email" type="email" placeholder="Email" class="form-control my-3">
+                  <input name="admin_pass" type="password" placeholder="Password" class="form-control my-3">
+                  <input name="admin_no" type="text" placeholder="Mobile Number" class="form-control my-3">
+
+                  <button class="btn m-auto text-light" style="background-color:#B33E8F;">SIGN IN</button>
+            </form>
+            <b class="fw-normal text-secondary" style="font-size: small;">Already Account ? <a href="/admin">Login</a> Here</b>
+        </div>
+     </div>
+</body>
+</html>
