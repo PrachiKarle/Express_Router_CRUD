@@ -5,15 +5,15 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, 
   auth: {
-    user: "prachikarle03@gmail.com", 
-    pass: "ches cnxm rfho kijh", 
+    user: "sender_email", 
+    pass: "app_pass", 
   },
 });
 
 const sendOTP=async (email,otp,name)=> {
 
   const info = await transporter.sendMail({
-    from: "prachikarle03@gmail.com", 
+    from: "sender_email", 
     to: email, 
     subject: "OTP Verification",
     text: "Hello world", 
