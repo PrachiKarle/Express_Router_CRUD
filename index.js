@@ -5,6 +5,10 @@ const app=express();
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
+//file upload
+var upload=require('express-fileupload');
+app.use(upload());
+
 //static file serve
 app.use(express.static('public/'));
 

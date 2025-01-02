@@ -1,23 +1,22 @@
 const nodemailer = require("nodemailer");
 
-
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false,
+  secure: false, 
   auth: {
-    user: "prachikarle03@gmail.com",
-    pass: "ches cnxm rfho kijh",
+    user: "prachikarle03@gmail.com", 
+    pass: "ches cnxm rfho kijh", 
   },
 });
 
+const sendOTP=async (email,otp,name)=> {
 
-var sendOTP = async (email, name, otp) => {
   const info = await transporter.sendMail({
-    from: "prachikarle03@gmail.com",
-    to: email,
-    subject: "Email Verification",
-    text: "Hello world?",
+    from: "prachikarle03@gmail.com", 
+    to: email, 
+    subject: "OTP Verification",
+    text: "Hello world?", 
     html: `
 <!doctype html>
 <html lang="en">
@@ -113,7 +112,7 @@ i.fas.fa-envelope-open {
       <div><i class="fas fa-lock otp-lock"></i></div>
       <div class="welcome-section">
         <div class="app-name">
-            Welcome
+           Insta App 
         </div>
         <div class="welcome-text">
           Thanks for signing up !
@@ -131,24 +130,26 @@ i.fas.fa-envelope-open {
       <p>Your One-Time Password (OTP) for verification is:</p>
       <div class="otp-code">${otp}</div>
       <p class="mt-4">Please use this OTP to complete your verification. The OTP is valid for the next 10 minutes.</p>
-      <a href="#" class="btn-verify">Verify Now</a>
+      <a href="/accept_otp" class="btn-verify">Verify Now</a>
     </div>
     <div class="footer-text">
-      <p>If you did not request this OTP, please <a href="#">contact us</a> immediately.</p>
-      <p>Thank you,<br>The Team</p>
+      <p>If you did not request this OTP, please <a href="/contact">contact us</a> immediately.</p>
+      <p>Thank you,<br>The InstaApp Team</p>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
-</html> 
-    `,
+</html>
+    
+    
+    `, 
   });
 
-
   console.log("Message sent: %s", info.messageId);
-};
+}
 
-sendOTP().catch(console.error);
+
+
 module.exports = sendOTP;

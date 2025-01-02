@@ -4,8 +4,13 @@ const Router=express.Router();
 //mysql connection
 var exe=require('../connection');
 
-Router.get('/',(req,res)=>{
-    res.render('users/home.ejs');
+Router.get('/',async(req,res)=>{
+    var sql=`select* from admincard`;
+    var data=await exe(sql);
+    const obj={data:data};
+    res.render('users/home.ejs',obj);
 })
+
+
 
 module.exports=Router;
