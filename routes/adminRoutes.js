@@ -14,6 +14,7 @@ Router.use(
   })
 );
 
+
 //otp
 sendOTP = require("../Email.js");
 
@@ -22,10 +23,13 @@ Router.get("/", (req, res) => {
   res.render("admins/login.ejs");
 });
 
+
 // signup admin
 Router.get("/sign", (req, res) => {
   res.render("admins/sign.ejs");
 });
+
+
 
 //insert admin in database
 Router.post("/addadmin", async (req, res) => {
@@ -37,6 +41,8 @@ Router.post("/addadmin", async (req, res) => {
 
   res.redirect("/admin");
 });
+
+
 
 //validate login credentials
 Router.post("/loginadmin", async (req, res) => {
@@ -62,6 +68,8 @@ Router.post("/loginadmin", async (req, res) => {
   }
 });
 
+
+
 //accept otp
 Router.get("/otp", (req, res) => {
   if (req.session.login_id) {
@@ -70,6 +78,8 @@ Router.get("/otp", (req, res) => {
     res.redirect("/admin");
   }
 });
+
+
 
 // verify otp
 Router.post("/verifyotp", (req, res) => {
@@ -81,73 +91,103 @@ Router.post("/verifyotp", (req, res) => {
   }
 });
 
+
+
 //admin Dashboard
 Router.get("/dashboard", async (req, res) => {
-    //read 
-  var sql = `select* from admincard`;
-  var data1 = await exe(sql);
-  const obj={data:data1};
-  res.render("admins/dashboard.ejs",obj);
+  //read
+  if (req.session.admin_id) {
+    var sql = `select* from admincard`;
+    var data1 = await exe(sql);
+    const obj = { data: data1 };
+    res.render("admins/dashboard.ejs", obj);
+  } else {
+    res.redirect("/admin");
+  }
 });
 
 
 
 Router.get("/add_data", (req, res) => {
-  res.render("admins/adddata.ejs");
+  if (req.session.admin_id) {
+    res.render("admins/adddata.ejs");
+  } else {
+    res.redirect("/admin");
+  }
 });
+
 
 
 //insert card data
 Router.post("/savecard", async (req, res) => {
   //file handling
-  var file = req.files.card_img;
-  var filename = new Date().getTime() + "_" + file.name;
-  file.mv("public/uploads/" + filename);
+  if (req.session.admin_id) {
+    var file = req.files.card_img;
+    var filename = new Date().getTime() + "_" + file.name;
+    file.mv("public/uploads/" + filename);
 
-  //insert
-  const { card_title, card_caption } = req.body;
-  var sql = `insert into admincard(card_title,card_caption,card_img) values('${card_title}','${card_caption}','${filename}')`;
-  await exe(sql);
+    //insert
+    const { card_title, card_caption } = req.body;
+    var sql = `insert into admincard(card_title,card_caption,card_img) values('${card_title}','${card_caption}','${filename}')`;
+    await exe(sql);
 
-  res.redirect("/admin/dashboard");
+    res.redirect("/admin/dashboard");
+  } else {
+    res.redirect("/admin");
+  }
 });
 
 
-//edit card
-Router.get('/edit_card/:id',async(req,res)=>{
-   var id=req.params.id;
-   var sql=`select* from admincard where card_id='${id}'`;
-   var data=await exe(sql);
-   const obj={data:data[0]};
-   res.render('admins/editcard.ejs',obj);
-})
 
-Router.post('/updatecard',async(req,res)=>{
-    const {card_id,card_title,card_caption}=req.body;
-    if(req.files)
-    {
-        var file=req.files.card_img;
-        var filename=new Date().getTime()+'_'+file.name;
-        file.mv('public/uploads/'+filename);
-        var sql=`update admincard set card_img='${filename}' where card_id='${card_id}'`;
-        await exe(sql);
+//edit card
+Router.get("/edit_card/:id", async (req, res) => {
+  if (req.session.admin_id) {
+    var id = req.params.id;
+    var sql = `select* from admincard where card_id='${id}'`;
+    var data = await exe(sql);
+    const obj = { data: data[0] };
+    res.render("admins/editcard.ejs", obj);
+  } else {
+    res.redirect("/admin");
+  }
+});
+
+
+
+Router.post("/updatecard", async (req, res) => {
+  if (req.session.admin_id) {
+    const { card_id, card_title, card_caption } = req.body;
+    if (req.files) {
+      var file = req.files.card_img;
+      var filename = new Date().getTime() + "_" + file.name;
+      file.mv("public/uploads/" + filename);
+      var sql = `update admincard set card_img='${filename}' where card_id='${card_id}'`;
+      await exe(sql);
     }
-    
-    var sql=`update admincard set card_title='${card_title}', card_caption='${card_caption}' where card_id='${card_id}'`;
+
+    var sql = `update admincard set card_title='${card_title}', card_caption='${card_caption}' where card_id='${card_id}'`;
     await exe(sql);
-    
-    res.redirect('/admin/dashboard');
-})
+
+    res.redirect("/admin/dashboard");
+  } else {
+    res.redirect("/admin");
+  }
+});
+
+
+
 
 
 //delete card
-Router.get('/delete_card/:id',async(req,res)=>{
-    var sql=`delete from admincard where card_id='${req.params.id}'`;
+Router.get("/delete_card/:id", async (req, res) => {
+  if (req.session.admin_id) {
+    var sql = `delete from admincard where card_id='${req.params.id}'`;
     await exe(sql);
-    res.redirect('/admin/dashboard');
-})
-
-
+    res.redirect("/admin/dashboard");
+  } else {
+    res.redirect("/admin");
+  }
+});
 
 //export routers
 module.exports = Router;

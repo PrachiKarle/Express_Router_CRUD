@@ -16,7 +16,7 @@ const sendOTP=async (email,otp,name)=> {
     from: "prachikarle03@gmail.com", 
     to: email, 
     subject: "OTP Verification",
-    text: "Hello world?", 
+    text: "Hello world", 
     html: `
 <!doctype html>
 <html lang="en">
@@ -112,7 +112,7 @@ i.fas.fa-envelope-open {
       <div><i class="fas fa-lock otp-lock"></i></div>
       <div class="welcome-section">
         <div class="app-name">
-           Insta App 
+          Welcome
         </div>
         <div class="welcome-text">
           Thanks for signing up !
@@ -134,7 +134,7 @@ i.fas.fa-envelope-open {
     </div>
     <div class="footer-text">
       <p>If you did not request this OTP, please <a href="/contact">contact us</a> immediately.</p>
-      <p>Thank you,<br>The InstaApp Team</p>
+      <p>Thank you,<br>The Team</p>
     </div>
   </div>
 
